@@ -1,0 +1,284 @@
+1. 에러사항
+    - 시설점검 변경시 오류발생(DetailEditFragment.java :: reqInsertInspect())
+        : 변경된 파라메타만 전송하게 하는 기능으로 테스트 -> StrUtil.isEqual() 함수 두개 주석 부분 풀고 하면 됩니다.
+        : 한글 utf8 인코딩해서 넘기기 -> StrUtil.utf8() 함수 주석 부분 풀고 하면 됩니다.
+        => 현재는 모든 파라메타 보내고, utf8인코딩 하지 않고 보내게 되어 있습니다.
+        ==> 위 부분 각각으로 모두 테스트 해보았는데 다 fail이 되었습니다.
+        ===> 서버측 확인을 해가면서 고쳐야 가능할 걸로 보입니다.
+
+    - 신규 시설 등록 오류발생(DetailEditFragment.java :: reqInsertInspect())
+        : 신규시설등록은 좌상단 메뉴 -> 시설점검 으로 진입해야 가능합니다.
+        : 시설점검 변경과 같은 코드를 쓰고 있으며, 시설점검 해결되면 같이 고쳐질걸로 보여집니다.
+
+    - 장신고 사진첨부시 에러(GojangSingoFragment.java :: reqInsertReport()
+        : 사진 첨부 시 fail이 되네요.
+        : 사진 첨부 하지 않았을 때는 success 되었습니다.
+        ===> 이 부분도 서버측 확인을 해가면서 고쳐야 가능할 걸로 보입니다.
+
+2. 확인사항
+    - 사진첨부(BitmapUtil.java :: bitmap2String())
+        : 사진은 jpg파일 데이터를 만들어 테스트 했습니다.
+
+    - 로그인 시 테스트가 용이하게 id, pass를 하드코딩해서 사용하고 있습니다.
+        : LoginActivity.java 의 onCreate() 부분에서 해당 소스 삭제하면 됩니다.
+        : 정상 동작은 이전에 로그인 성공한 id만 기본설정되게 동작합니다.
+
+    - wgs84좌표 -> tm좌표 변경 : DetailEditFragment.java :: onClick()
+        : MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude());
+          edittext_tm_x.setText(dformat.format(mapPoint.getMapPointCONGCoord().x));
+          edittext_tm_y.setText(dformat.format(mapPoint.getMapPointCONGCoord().y));
+          메일로 전달받은 소스가 안드로이드에선 적용이 안되어서 다음지도api 에서 유사한 걸 적용했는데 확인은 한번 해야 할 걸로 보입니다.
+
+    - 다음지도 api
+        가이드 : http://apis.map.daum.net/android/guide/
+        키해시 가져오기 : http://kanzler.tistory.com/58 => LoginActivity::onCreate 부분에 키해시 가져오는 부분 적용되어 있습니다.
+        => 현재 제 다음 계정으로 api신청해서 적용한 상태이며, 추후 변경이 필요해 보입니다.
+        ==> api신청시 패키지명은 build.gradle의 applicationId "com.gov.smartqr" 값을 사용했으며, 아마 패키지명 변경 후 재신청 해야 할걸로 보입니다.
+            : 생성한 키값 들은 아래와 같습니다.
+            네이티브 앱 키
+            8eeaa0db84733fd2d63067f69c5eb4e6
+            REST API 키
+            b8f614e26f77fb3d7c5e714ee5a52491
+            JavaScript 키
+            fa8c5e4e4ff3e9c9fe6dc86ade30bbd7
+            Admin 키
+            eea087430037ffefe5e74df63f959d04
+
+
+
+
+
+
+1. 로그인
+    - UI : 100%
+    - 서버연동 및 기능 : 100%
+2. 시설물 조회
+    - UI : 100%
+    - 지도 : 100%
+    - 서버연동 및 기능 : 100%
+3. 시설물 상세 조회
+    - UI : 100%
+    - 서버연동 및 기능 : 100%
+4. 시설 점검
+    - UI : 100%
+    - 서버연동 및 기능 : 90%(수정처리 시 에러발생)
+5. 신규 시설 등록
+    - UI : 100%
+    - 서버연동 및 기능 : 90%(신규처리 시 에러발생)
+6. 고장 신고
+    - UI : 100%
+    - 서버연동 및 기능 : 95%(사진추가 시 에러발생)
+7. 환경설정
+    - UI : 100%
+    - 기능 : 100%
+8. 기타
+    - QR코드 검색 : 100%
+
+
+받는사람 :
+<jsan@globallinkers.co.kr>
+참조 :
+<lwj@globallinkers.co.kr>
+
+
+svn
+http://58.124.209.208:1553/svn/project/smartqr
+
+
+
+*** 다음지도 *****
+가이드 : http://apis.map.daum.net/android/guide/
+키해시 가져오기 : http://kanzler.tistory.com/58
+
+스마트지하수
+애플리케이션을 생성하였습니다
+
+네이티브 앱 키
+8eeaa0db84733fd2d63067f69c5eb4e6
+REST API 키
+b8f614e26f77fb3d7c5e714ee5a52491
+JavaScript 키
+fa8c5e4e4ff3e9c9fe6dc86ade30bbd7
+Admin 키
+eea087430037ffefe5e74df63f959d04
+
+
+입력창
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="1">
+    <EditText
+        android:id="@+id/edittext_gaebal_year"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="2dp"
+        android:textSize="20dp"
+        android:background="@drawable/shape_round_rect"
+        android:paddingLeft="5dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:paddingRight="5dp"
+        android:text=""
+        android:hint=""/>
+</LinearLayout>
+
+콤보박스
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="1">
+    <FrameLayout
+        android:id="@+id/frame_chungjuk_amban"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/drawable_btn_sround_gray"
+        android:layout_margin="2dp"
+        android:padding="0dp">
+        <TextView
+            android:id="@+id/textview_chungjuk_amban"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:includeFontPadding="false"
+            android:text="암반"
+            android:textColor="@color/colorBlack2"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/icon_arrow_down" />
+    </FrameLayout>
+</LinearLayout>
+
+콤보박스 + 단위텍스
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="1">
+    <FrameLayout
+        android:id="@+id/frame_chisu_plan_amount"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/drawable_btn_sround_gray"
+        android:layout_margin="2dp"
+        android:padding="0dp">
+        <TextView
+            android:id="@+id/textview_chisu_plan_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:includeFontPadding="false"
+            android:text="30.00"
+            android:textColor="@color/colorBlack2"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/icon_arrow_down" />
+    </FrameLayout>
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:gravity="left|center_vertical"
+        android:text="(m³/d)"
+        android:textColor="@color/colorBlack3"
+        android:textSize="20dp" />
+</LinearLayout>
+
+콤보 + 입력창 + 단위
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="1">
+    <FrameLayout
+        android:id="@+id/frame_yangsu_nungryuk"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/drawable_btn_sround_gray"
+        android:layout_margin="2dp"
+        android:padding="0dp">
+        <TextView
+            android:id="@+id/textview_yangsu_nungryuk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:includeFontPadding="false"
+            android:text="직접입력"
+            android:textColor="@color/colorBlack2"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/icon_arrow_down" />
+    </FrameLayout>
+    <EditText
+        android:id="@+id/edittext_yangsu_nungryuk"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="2dp"
+        android:textSize="20dp"
+        android:background="@drawable/shape_round_rect"
+        android:paddingLeft="5dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:paddingRight="5dp"
+        android:text="98.00"/>
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:gravity="left|center_vertical"
+        android:text="(mm)"
+        android:textColor="@color/colorBlack3"
+        android:textSize="15dp" />
+</LinearLayout>
+
+입력창 + 단위
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_weight="1">
+    <EditText
+        android:id="@+id/edittext_tochulryang"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="2dp"
+        android:textSize="20dp"
+        android:background="@drawable/shape_round_rect"
+        android:paddingLeft="5dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:paddingRight="5dp"
+        android:text=""
+        android:hint=""/>
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:gravity="left|center_vertical"
+        android:text="(m³/d)"
+        android:textColor="@color/colorBlack3"
+        android:textSize="20dp" />
+</LinearLayout>
